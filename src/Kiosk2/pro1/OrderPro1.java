@@ -1,33 +1,27 @@
 package Kiosk2.pro1;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class OrderPro1 {
     //속성
-    private String info;
+    private List <MenuItemPro1> plusItem;
 
-
-
-    //생성자
-    public OrderPro1(String info) {
-        this.info = info;
+    public OrderPro1() {
     }
 
-    //기능
-    public String getInfo() {
-        return info;
-    }
-
-    public double checkOrders(List<String> basket, double cost){
+    public double checkOrders(List<MenuItemPro1> itemBox){
         System.out.println("[ Orders ]");
-        for(int i=0; i<basket.size(); i+=4){
-            System.out.print(basket.get(i) + "   |  ");
-            System.out.print(basket.get(i+1) + "  |  ");
-            System.out.print(basket.get(i+2) + "  |  ");
-            System.out.println(" 수량:  X " + basket.get(i+3));
+        double cost=0;
+        for(int i=0; i<itemBox.size(); i++){
+            System.out.print(itemBox.get(i).getItemName() + "   |  ");
+            System.out.print(" W " +itemBox.get(i).getPrice() + "  |  ");
+            System.out.print(itemBox.get(i).getDescription() + "  |  ");
+            System.out.println(" 수량:  X " + itemBox.get(i).getQuantity());
 
-            cost += Double.parseDouble(basket.get(i+1)) * Double.parseDouble(basket.get(i+3));
+
+            cost += (itemBox.get(i).getPrice()) * (itemBox.get(i).getQuantity());  // 곱하기 수량 필요
         }
         System.out.println("\n");
         System.out.println(" [ Total ] ");
@@ -39,8 +33,25 @@ public class OrderPro1 {
     public int checkBuying(Scanner sc){
         System.out.println("구매하시겠습니까?");
         System.out.println("1. 주문    | 2. 추가");
-        int menuNumber = sc.nextInt();
-        return menuNumber;
+        String tempt = """
+                
+                
+                
+                """;
+        while (true) {
+            try {
+                int menuNumber = sc.nextInt();
+                if (menuNumber == 1 | menuNumber == 2) {
+                    return menuNumber;
+                }
+                System.out.println("잘못된 입력입니다. 다시 입력해주세요. ");
+                menuNumber = sc.nextInt();
+                return menuNumber;
+            } catch (InputMismatchException e) {
+                System.out.println("숫자가 아닌 입력입니다. 다시 입력해주세요.");
+                sc.nextInt();
+            }
+        }
     }
 
     public double discounting(Scanner sc){
@@ -50,8 +61,18 @@ public class OrderPro1 {
             System.out.print(rates.name()+"  :  ");
             System.out.println(rates.getRate() + "%");
         }
-        int rateNumber = sc.nextInt();
+
+        int rateNumber=4;
+        try{
+             rateNumber = sc.nextInt();
+
+        }catch (InputMismatchException e){
+            System.out.println("잘못된 입력입니다.");
+            sc.nextInt(); //버퍼 삭제
+        }
+
         double rate =0;
+
         switch(rateNumber){
             case 1:
                 rate = 0.1;
@@ -65,17 +86,20 @@ public class OrderPro1 {
             case 4:
                 rate = 0;
                 break;
+
+            default:
+                break;
         }return rate;
     }
 
 
 
-    public void confirmingBuying(List <String> basket, double rate, double cost){
+    public void confirmingBuying( double rate, double cost){
         System.out.println("할인율 : " + (rate*100)+"%" );
         System.out.println("----------------------------------");
-        System.out.println("총 주문금액 :  W  " +Math.round((cost * (1-rate)))/100 * 100);
+        System.out.println("총 주문금액 :  W  " +Math.round((cost * (1-rate))));
         System.out.println("구매가 완료되었습니다.");
-        basket.clear();
+
     }
 }
 

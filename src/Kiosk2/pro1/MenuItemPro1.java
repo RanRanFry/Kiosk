@@ -1,9 +1,10 @@
 package Kiosk2.pro1;
 
 public class MenuItemPro1 {
-    String itemName;
-    double price;
-    String description;
+    private String itemName;
+    private double price;
+    private String description;
+    private int quantity =1;
 
 
     //생성자
@@ -13,6 +14,12 @@ public class MenuItemPro1 {
         this.description = description;
     }
 
+    public MenuItemPro1(String itemName, double price, String description, int qunatity) {
+        this.itemName = itemName;
+        this.price = price;
+        this.description = description;
+        this.quantity = quantity;
+    }
 
     //기능
     public String getItemName() {
@@ -25,5 +32,12 @@ public class MenuItemPro1 {
 
     public String getDescription() {
         return description;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

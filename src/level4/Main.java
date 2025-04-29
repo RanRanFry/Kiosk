@@ -63,9 +63,9 @@ public class Main {
                                     pageNumber = 1;
                                     break;
                                 case 1:
-                                    shoppingBasket.add(((MenuItem)burgerItems.get(menuNumber)).getMenuName());
+                                    shoppingBasket.add((burgerItems.get(menuNumber)).getMenuName());
                                     amountList.add(amount);
-                                    totalCost += ((MenuItem)burgerItems.get(menuNumber)).getPrice() * (double)amount;
+                                    totalCost += (burgerItems.get(menuNumber)).getPrice() * (double)amount;
                                     System.out.println("구매하기 5번  |  추가구매 0번");
                                     pageNumber = sc.nextInt();
                             }

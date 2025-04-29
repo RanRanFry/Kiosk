@@ -2,6 +2,7 @@ package Kiosk2.pro1;
 
 
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 public class MenuPro1 {
@@ -15,9 +16,25 @@ public class MenuPro1 {
         }
         System.out.println("0.  종료  |  뒤로가기");
         System.out.println("----------------------------------------");
-        System.out.println("메뉴를 선택하세요.");
-        int num = sc.nextInt();
-        return num;
+
+
+        while(true){ // 예외 처리 구문
+            try{
+                System.out.println("메뉴를 선택하세요.");
+                int num = sc.nextInt();
+
+                if ((num >= 0 && num <= itemBox.size())){
+                    return num;
+                }
+                else{
+                    System.out.println("잘못된 입력입니다.");
+                    throw new InputMismatchException();
+                }
+            }catch (InputMismatchException e){
+                System.out.println("잘못된 형식입니다. 다시 입력하세요.");
+                sc.next();
+            }
+        }
     }
 
     //키오스크-> 메뉴 -> 음식 리스트 순서로들어가므로 메뉴에서 관리하는 게 적당하다.
@@ -36,21 +53,29 @@ public class MenuPro1 {
         }return true;
     }
 
-    public  void addBasket(List <String> basket,List <MenuItemPro1> itemBox, int  menuNumber,Scanner sc){
+    public  void addBasket(List <MenuItemPro1> basket,List <MenuItemPro1> itemBox, int  menuNumber,Scanner sc){
         System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
         System.out.println("1. 확인         2. 취소");
         int moveNumber = sc.nextInt();
-        String orderName = itemBox.get(menuNumber - 1).getItemName();
-        String price = String.valueOf(itemBox.get(menuNumber - 1).getPrice());
-        String orderDescription = itemBox.get(menuNumber - 1).getDescription();
+
+        while(moveNumber !=1 && moveNumber !=2) //예외처리
+        {
+            try{
+                System.out.println("잘못된 입력입니다. 다시 입력해주세요. ");
+                moveNumber = sc.nextInt();
+            }catch(InputMismatchException e){
+                System.out.println("잘못된 형식입니다. 숫자를 입력하세요.");
+                moveNumber = sc.nextInt();
+            }
+        }
+
+
 
         if(moveNumber==1){
-            basket.add(orderName);
-            basket.add(price);
-            basket.add(orderDescription);
             System.out.println("얼마나 담으시겠습니까?");
             int quantity = sc.nextInt();
-            basket.add(String.valueOf(quantity));
+            itemBox.get(menuNumber-1).setQuantity(quantity);
+            basket.add(itemBox.get(menuNumber-1));
         }
     }
 }

@@ -45,7 +45,7 @@ public class MainPro1 {
 
 
         //장바구니 리스트 생성
-        List <String> shoppingBasket = new ArrayList<>();
+        List <MenuItemPro1> shoppingBasket = new ArrayList<>();
 
 
 
@@ -57,10 +57,7 @@ public class MainPro1 {
 
 
 
-
-
-
-        boolean flag = true;
+        boolean flag = true; //while 문을 종료하기 위한 조건
         while(flag){
 
             Home.start(menuBox, shoppingBasket);//메인화면 출력
@@ -82,7 +79,7 @@ public class MainPro1 {
                 case 2:
                     System.out.println("----------------------------------------");
                     System.out.println("[ drinks menu ]");
-                    menu.menuItemDisplay(drinkBox, sc);
+                    menuNumber = menu.menuItemDisplay(drinkBox, sc);
                     if(menu.selecting( menuNumber, drinkBox)){//선택 보여주기, 종료 버튼 입력시 종료
                         menu.addBasket(shoppingBasket, drinkBox, menuNumber, sc);
                         continue;
@@ -103,15 +100,18 @@ public class MainPro1 {
 
 
                 case 4:
-                    double total=0;
-                    order.checkOrders(shoppingBasket, total);
+
+                    order.checkOrders(shoppingBasket);
                     menuNumber =order.checkBuying(sc);
 
+
+                    double total=0;
                     if(menuNumber ==1){
-                        double discountRate = order.discounting(sc);
+                         double discountRate = order.discounting(sc);
                         System.out.println("다음 상품을 구매하였습니다.");
-                        total = order.checkOrders(shoppingBasket, total);
-                        order.confirmingBuying(shoppingBasket,discountRate, total);
+                        total = order.checkOrders(shoppingBasket);
+                        order.confirmingBuying(discountRate, total);
+                        shoppingBasket.clear();
                     }else{
                         break;
                     }
